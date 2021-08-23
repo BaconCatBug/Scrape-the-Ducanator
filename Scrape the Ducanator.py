@@ -1,3 +1,8 @@
+# Install python 3, duh!
+# Run the command below in a cmd window to install the needed packages, without the #, duh!
+# pip install bs4 requests pandas
+# Run the python file with the included batch file, DUH!
+
 try:
     # Error handling if something happens during script initialisation
     from csv import QUOTE_ALL  # Needed to export data to CSV
@@ -12,12 +17,6 @@ except ModuleNotFoundError:
     print('You didn\'t install the packages like I told you to. Please run \"pip install bs4 requests pandas\" in a cmd window to install the required packages!')
     print('\033[1;31m' + format_exc())
     exit(1)
-
-
-# Install python 3, duh!
-# Run the command below in a cmd window to install the needed packages, without the #, duh!
-# pip install bs4 requests pandas
-# Run the python file with the included batch file, DUH!
 
 try:
     # Sets the URL to scrape, because hard-coding is bad
