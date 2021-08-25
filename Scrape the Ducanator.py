@@ -13,7 +13,6 @@ try:
     from traceback import format_exc  # Needed for more friendly error messages.
     from openpyxl import load_workbook
     from numpy import arange
-
 except ModuleNotFoundError:
     print('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!')
     print('You didn\'t install the packages like I told you to. Please run \"pip install bs4 requests pandas\" in a cmd window to install the required packages!')
@@ -21,11 +20,15 @@ except ModuleNotFoundError:
     exit(1)
 
 try:
+    #User Variables
+    workbook_name = 'Prime-Relic Data.xlsx'
+    sheet_name_day = 'Day'
+    sheet_name_hour = 'Hour'
+    sheet_name_relic = 'Relic Data'
     # Sets the URL to scrape, because hard-coding is bad
-    URL = "https://warframe.market/tools/ducats"
-    sheet_name = 'Prime-Relic_Data.xlsx'
+    url_ducats = "https://warframe.market/tools/ducats"
     # Scrapes the given URL
-    soup = str(BeautifulSoup(get(URL).content, "html.parser")).replace('\n', '')
+    soup = str(BeautifulSoup(get(url_ducats).content, "html.parser")).replace('\n', '')
     # Finds the needed json string for item data, previous hour data, and previous day data.
     # Slices off the first bit to make a valid json string for pandas later
     items = search('"items": (\[(?:\[??[^\[]*?\]))', soup).group(0)[9:]
@@ -61,9 +64,8 @@ try:
     df_previous_hour_merged = df_previous_hour_merged.reset_index(drop=True)
 
     # Fuck Comments
-    URL = "https://n8k6e2y6.ssl.hwcdn.net/repos/hnfvc0o3jnfvc873njb03enrf56.html"
-    # Scrapes the given URL
-    soup = str(BeautifulSoup(get(URL).content, "html.parser")).replace('\n', '')
+    url_relics = "https://n8k6e2y6.ssl.hwcdn.net/repos/hnfvc0o3jnfvc873njb03enrf56.html"
+    soup = str(BeautifulSoup(get(url_relics).content, "html.parser")).replace('\n', '')
     parsed_relics = search('<h3 id="relicRewards">Relics:</h3><table>.*?</table>', soup).group(0)[34:].replace('th>', 'td>').replace(r'<th colspan="2">', r'<td>').replace('X Kuva', 'x Kuva')
     df_parsed_relics = read_html(parsed_relics, header=None)
     df_parsed_relics = df_parsed_relics[0].replace(to_replace=r'.+\((.+)\%\)', value=r'\1', regex=True)
@@ -80,23 +82,22 @@ try:
             templist2.append(templist)
             templist = []
         templist.append(value)
-
     df_even_more_parsed_relics = DataFrame(templist2, columns=['Relic_Name', 'C1', 'C2', 'C3', 'U1', 'U2', 'Rare'])
 
     # Export data
-    with ExcelWriter(sheet_name, mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
-        df_previous_day_merged.to_excel(writer, sheet_name="Day")
-        df_previous_hour_merged.to_excel(writer, sheet_name="Hour")
-        df_even_more_parsed_relics.to_excel(writer, sheet_name="Relics")
-    book = load_workbook(sheet_name)
-    sheet = book['Day']
+    with ExcelWriter(workbook_name, mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
+        df_previous_day_merged.to_excel(writer, sheet_name=sheet_name_day)
+        df_previous_hour_merged.to_excel(writer, sheet_name=sheet_name_hour)
+        df_even_more_parsed_relics.to_excel(writer, sheet_name=sheet_name_relic)
+    book = load_workbook(workbook_name)
+    sheet = book[sheet_name_day]
     sheet.delete_cols(1,1)
-    sheet = book['Hour']
+    sheet = book[sheet_name_hour]
     sheet.delete_cols(1,1)
-    sheet = book['Relics']
+    sheet = book[sheet_name_relic]
     sheet.delete_cols(1,1)
-    book.save(sheet_name)
-    print('If you see this message things should have worked correctly. Remove the \"pause\" from the batch script to automatically close this window after use.')
+    book.save(workbook_name)
+    print('If you see this message, things should have worked correctly. Remove the \"pause\" from the batch script to automatically close this window after use.')
 
 except Exception:
     # Error handling if something happens during the main script
