@@ -26,9 +26,12 @@ try:
     sheet_name_hour = 'Hour'
     sheet_name_relic = 'Relic Data'
     # Sets the URL to scrape, because hard-coding is bad
+    print('Downloading Ducat Data')
     url_ducats = "https://warframe.market/tools/ducats"
     # Scrapes the given URL
     soup = str(BeautifulSoup(get(url_ducats).content, "html.parser")).replace('\n', '')
+    print('Ducat Data Downloaded')
+    print('Processing Ducat Data')
     # Finds the needed json string for item data, previous hour data, and previous day data.
     # Slices off the first bit to make a valid json string for pandas later
     items = search('"items": (\[(?:\[??[^\[]*?\]))', soup).group(0)[9:]
@@ -63,9 +66,13 @@ try:
     df_previous_hour_merged['datetime'] = df_previous_hour_merged['datetime'].astype(str).str[:-6]
     df_previous_hour_merged = df_previous_hour_merged.reset_index(drop=True)
 
+    print('Ducat Data Processed')
     # Fuck Comments
+    print('Downloading Relic Data')
     url_relics = "https://n8k6e2y6.ssl.hwcdn.net/repos/hnfvc0o3jnfvc873njb03enrf56.html"
     soup = str(BeautifulSoup(get(url_relics).content, "html.parser")).replace('\n', '')
+    print('Relic Data Downloaded')
+    print('Processing Relic Data')
     parsed_relics = search('<h3 id="relicRewards">Relics:</h3><table>.*?</table>', soup).group(0)[34:].replace('th>', 'td>').replace(r'<th colspan="2">', r'<td>').replace('X Kuva', 'x Kuva')
     df_parsed_relics = read_html(parsed_relics, header=None)
     df_parsed_relics = df_parsed_relics[0].replace(to_replace=r'.+\((.+)\%\)', value=r'\1', regex=True)
@@ -83,8 +90,10 @@ try:
             templist = []
         templist.append(value)
     df_even_more_parsed_relics = DataFrame(templist2, columns=['Relic_Name', 'C1', 'C2', 'C3', 'U1', 'U2', 'Rare'])
+    print('Relic Data Processed')
 
     # Export data
+    print('Exporting Worksheet')
     with ExcelWriter(workbook_name, mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
         df_previous_day_merged.to_excel(writer, sheet_name=sheet_name_day)
         df_previous_hour_merged.to_excel(writer, sheet_name=sheet_name_hour)
