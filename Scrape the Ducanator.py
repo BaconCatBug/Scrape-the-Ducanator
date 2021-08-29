@@ -2,6 +2,7 @@
 # Run the command below in a cmd window to install the needed packages, without the #, duh!
 # pip install bs4 requests pandas openpyxl lxml html5lib
 # Run the python file with the included batch file, DUH!
+from oauth2client.service_account import ServiceAccountCredentials
 
 try:
     # Error handling if something happens during script initialisation
@@ -9,10 +10,15 @@ try:
     from bs4 import BeautifulSoup  # Needed to parse the dynamic webpage of the Ducanator
     from requests import get  # Needed to get the webpage of the Ducanator
     from re import search  # Needed to find the json string to import into pandas
-    from pandas import DataFrame, read_json, read_html, ExcelWriter  # Needed to convert the json string into a usable dataframe object for manipulation
+    from pandas import set_option, concat, DataFrame, read_json, read_html, ExcelWriter  # Needed to convert the json string into a usable dataframe object for manipulation
     from traceback import format_exc  # Needed for more friendly error messages.
     from openpyxl import load_workbook
     from numpy import arange
+
+    set_option('display.max_columns', None)
+    set_option('display.max_rows', None)
+    set_option('display.expand_frame_repr', False)
+
 except ModuleNotFoundError:
     print('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!')
     print('You didn\'t install the packages like I told you to. Please run \"pip install bs4 requests pandas\" in a cmd window to install the required packages!')
@@ -90,6 +96,32 @@ try:
             templist = []
         templist.append(value)
     df_even_more_parsed_relics = DataFrame(templist2, columns=['Relic_Name', 'C1', 'C2', 'C3', 'U1', 'U2', 'Rare'])
+    df_relic_class = df_even_more_parsed_relics['Relic_Name'].str.split().str[0]
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Class', df_relic_class, allow_duplicates=True)
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Type', df_even_more_parsed_relics['Relic_Name'].str.split().str[1], allow_duplicates=True)
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Refinement', df_even_more_parsed_relics['Relic_Name'].str.split().str[3].replace(to_replace=r'[\(\)]', value=r'', regex=True), allow_duplicates=True)
+    dict = {'Exceptional':'','Flawless':'','Radiant':''}
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'C1_Raw', df_even_more_parsed_relics['C1'].replace(to_replace=r' \(.+\)',value='',regex=True))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'C2_Raw', df_even_more_parsed_relics['C2'].replace(to_replace=r' \(.+\)',value='',regex=True))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'C3_Raw', df_even_more_parsed_relics['C3'].replace(to_replace=r' \(.+\)',value='',regex=True))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U1_Raw', df_even_more_parsed_relics['U1'].replace(to_replace=r' \(.+\)',value='',regex=True))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U2_Raw', df_even_more_parsed_relics['U2'].replace(to_replace=r' \(.+\)',value='',regex=True))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Rare_Raw', df_even_more_parsed_relics['Rare'].replace(to_replace=r' \(.+\)',value='',regex=True))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'C1_Odds', df_even_more_parsed_relics['C1'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'C2_Odds', df_even_more_parsed_relics['C2'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'C3_Odds', df_even_more_parsed_relics['C3'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U1_Odds', df_even_more_parsed_relics['U1'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U2_Odds', df_even_more_parsed_relics['U2'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Rare_Odds', df_even_more_parsed_relics['Rare'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
+    #print(df_even_more_parsed_relics.head(5))
+    #df_even_more_parsed_relics['Relic_Name'] = df_even_more_parsed_relics['Relic_Name'].str.split(n=1).str[1]
+    #df_axi = df_even_more_parsed_relics[df_even_more_parsed_relics['Relic_Class']=='Axi'].reset_index(drop=True)
+    #df_lith = df_even_more_parsed_relics[df_even_more_parsed_relics['Relic_Class']=='Lith'].reset_index(drop=True)
+    #df_meso = df_even_more_parsed_relics[df_even_more_parsed_relics['Relic_Class']=='Meso'].reset_index(drop=True)
+    #df_neo = df_even_more_parsed_relics[df_even_more_parsed_relics['Relic_Class']=='Neo'].reset_index(drop=True)
+    #df_requiem = df_even_more_parsed_relics[df_even_more_parsed_relics['Relic_Class']=='Requiem'].reset_index(drop=True)
+    #df_final_export_relic = concat([df_axi,df_lith,df_meso,df_neo,df_requiem], axis=1, ignore_index=True)
+    #print(df_even_more_parsed_relics)
     print('Relic Data Processed')
 
     # Export data
@@ -98,6 +130,7 @@ try:
         df_previous_day_merged.to_excel(writer, sheet_name=sheet_name_day)
         df_previous_hour_merged.to_excel(writer, sheet_name=sheet_name_hour)
         df_even_more_parsed_relics.to_excel(writer, sheet_name=sheet_name_relic)
+        #df_final_export_relic.to_excel(writer, sheet_name=sheet_name_relic)
     book = load_workbook(workbook_name)
     sheet = book[sheet_name_day]
     sheet.delete_cols(1,1)

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "relicducats",
+  "private_key_id": "e547fc0f040ee32d70f99480f70b5946d0da1a31",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5TCUIulNGfoZM\n/3M1oY7/ZP3QsmGsP/sPRXMGS095A9FEtgDLmOq50jr2DrsMnJK5RjyS/7plqAxf\nZsDPzPX1KyBx2RjhDOCcfDLsDOYqbIAYQyK7WF2lr308aW4fjSB2iGKJIXimiWZX\nVpDO3DpAQC2tnomjyx2P6nEMpbinhLYQxuJsUoac8Neu8avFuBqxJM8K26rA+xJX\n4DUTNbrjlgh11rMCCqB/txOOBWHcBt/AzfEz0XnknTQX+Krs3G0LpYGhPLjIYLzf\nn4erK3Q/R0b9EvkgV4XhGPCcTcjzz5SnZx8zpAS/iSTYY44/uU04TfAapOkrXFiv\nDyHEm0QDAgMBAAECggEAG6uJujhsuBGrx3K8Bw21l2DC4DfLCxhQytKBnzZ+yyDt\nTpfpHX4byxzgLh88AmGdLWqWIBNtB8Ik+tgSwdUnA3HpueaD5xNvtR580jAI7Nvf\n8v+Pf69t6JCAoJVT2wVNjDXIlRa4+BF7hV5JaIKNdku/JnaOsjViGDwXnp5eqTEQ\nXgNSSBkbwaYAzJm1giYuIZW2rlmZCbTlgKizDH+qV3wFblf/8DXe9kSZ0L7u9TX3\nfmwVcxGwqMVUU7QoBPNTIf0Ahz/SxwqIQTElqqK3gowPZKMdM2PnLqBUYsPhip6K\nHv9+x07tHDYMd8Fxg4r+k4lAlFgGpVlmYkeS0HnI9QKBgQDtjX+vIhLU6oSLHhFo\nbIxUrTxk3xcysezaSaXUA6/dyloCP5agZ6Yk8yYPBTOi7JaemcBoZ2W5EULC8St8\nYmxDWnLphAOVjDTSioZtWMkIyKc1xwoGsDPiXcS8BSsTDu9Uzlnu95qpyPxcKiGw\nTbryqna9hi7HyBrMSW/bdTwaHQKBgQDHr9Iy5lbf1XSebRqlXizncFoXsQz7tNzg\n65NqzKtXAZqW4ouBoJV/xSHu+97zVw3hUufRM4ICFDaq706EPwpWupkb3iwLa9mx\nBsGHJZP5JNbEJJz7bGH8TqU7I/32gWf+GPd7k3qfqi0UExZlyWHe3OVisilhtvZF\nc1E3HFV8nwKBgEhHxrMeNgas+Plvg7J3XNejAn5a1y8orj3ZLOju2kMs/+gxOv7B\nqu8RQOJPHeAUBtxpQf9CftQp6VtxkF6/f9uamN5uubx2NdheJ/r7iefvTdlyH53b\nXV4iU+s1015wK+htBTZOBrRkoEzW0PtZG2oc7hZKzs8hFu5T5gIrkMcNAoGBAIYo\n02GNLeren6ZdCRz3g9XOv0jRlDZ8UjXvMDD951PiaPlcpXvm5upcCKtmn2kAIPw0\n1jjQkVVSPVRkyWzCafDRF1MI1rCpui1cq6NgFOW74WsQakPlkoOQVyS/zr3SPYsT\nPRrSf/1LuVOWa2LhhRbVdGv15SWYZidNDdCoAatjAoGBALtPyTT6+0ukmsCMqhzH\nzD5yTmkr4OivkUJwipgAa+JL/ZNWwvWmFHya0UKrcBIFdLy/yjlIW+j+RjUwJbji\nJlXbzYMrP5xWUMCzVrx7rwTbEgMrjJi4G3jIm3Jp6AXGJ5VyFjyW9kg38eluMdAD\ncujCYoNiLK8Bp8kUTzKPX4Cz\n-----END PRIVATE KEY-----\n",
+  "client_email": "relicducats@relicducats.iam.gserviceaccount.com",
+  "client_id": "114350454576668899021",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/relicducats%40relicducats.iam.gserviceaccount.com"
+}
