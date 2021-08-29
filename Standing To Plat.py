@@ -11,11 +11,6 @@ try:
     from json import loads, dumps
     from re import compile
     from time import sleep, time
-
-    set_option('display.max_columns', None)
-    set_option('display.max_rows', None)
-    set_option('display.expand_frame_repr', False)
-
 except ModuleNotFoundError:
     print('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!')
     print('You didn\'t install the packages like I told you to. Please run \"pip install bs4 requests pandas\" in a cmd window to install the required packages!')

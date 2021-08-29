@@ -2,7 +2,6 @@
 # Run the command below in a cmd window to install the needed packages, without the #, duh!
 # pip install bs4 requests pandas openpyxl lxml html5lib
 # Run the python file with the included batch file, DUH!
-from oauth2client.service_account import ServiceAccountCredentials
 
 try:
     # Error handling if something happens during script initialisation
@@ -14,11 +13,6 @@ try:
     from traceback import format_exc  # Needed for more friendly error messages.
     from openpyxl import load_workbook
     from numpy import arange
-
-    set_option('display.max_columns', None)
-    set_option('display.max_rows', None)
-    set_option('display.expand_frame_repr', False)
-
 except ModuleNotFoundError:
     print('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!')
     print('You didn\'t install the packages like I told you to. Please run \"pip install bs4 requests pandas\" in a cmd window to install the required packages!')
