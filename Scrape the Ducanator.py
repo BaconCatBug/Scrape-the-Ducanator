@@ -93,7 +93,7 @@ try:
     df_even_more_parsed_relics = DataFrame(templist2, columns=['Relic_Name', 'C1', 'C2', 'C3', 'U1', 'U2', 'Rare'])
     df_relic_class = df_even_more_parsed_relics['Relic_Name'].str.split().str[0]
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Class', df_relic_class, allow_duplicates=True)
-    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Type', df_even_more_parsed_relics['Relic_Name'].str.split().str[1], allow_duplicates=True)
+    df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Type', df_even_more_parsed_relics['Relic_Name'].str.upper().str.split().str[1], allow_duplicates=True)
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Refinement', df_even_more_parsed_relics['Relic_Name'].str.split().str[3].replace(to_replace=r'[\(\)]', value=r'', regex=True), allow_duplicates=True)
     dict = {'Exceptional':'','Flawless':'','Radiant':''}
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'C1_Raw', df_even_more_parsed_relics['C1'].replace(to_replace=r' \(.+\)',value='',regex=True))
@@ -122,6 +122,7 @@ try:
     # Export data
     print('Exporting Worksheet')
     df_even_more_parsed_relics.to_csv(csv_name, index=None, quoting=QUOTE_ALL)
+    df_previous_day_merged.to_csv('DayPrices.csv', index=None, quoting=QUOTE_ALL)
     with ExcelWriter(workbook_name, mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
         df_previous_day_merged.to_excel(writer, sheet_name=sheet_name_day)
         df_previous_hour_merged.to_excel(writer, sheet_name=sheet_name_hour)
