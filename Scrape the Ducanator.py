@@ -22,6 +22,7 @@ except ModuleNotFoundError:
 try:
     #User Variables
     workbook_name = 'Prime-Relic Data.xlsx'
+    csv_name = 'Prime-Relic Data.csv'
     sheet_name_day = 'Day'
     sheet_name_hour = 'Hour'
     sheet_name_relic = 'Relic Data'
@@ -120,6 +121,7 @@ try:
 
     # Export data
     print('Exporting Worksheet')
+    df_even_more_parsed_relics.to_csv(csv_name, index=None, quoting=QUOTE_ALL)
     with ExcelWriter(workbook_name, mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
         df_previous_day_merged.to_excel(writer, sheet_name=sheet_name_day)
         df_previous_hour_merged.to_excel(writer, sheet_name=sheet_name_hour)
