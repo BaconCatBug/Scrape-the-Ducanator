@@ -108,6 +108,7 @@ try:
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U1_Odds', df_even_more_parsed_relics['U1'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U2_Odds', df_even_more_parsed_relics['U2'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Rare_Odds', df_even_more_parsed_relics['Rare'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
+    df_even_more_parsed_relics = df_even_more_parsed_relics.replace(to_replace=r'^(.+) Blueprint',value=r'\1', regex=True)
     #print(df_even_more_parsed_relics.head(5))
     #df_even_more_parsed_relics['Relic_Name'] = df_even_more_parsed_relics['Relic_Name'].str.split(n=1).str[1]
     #df_axi = df_even_more_parsed_relics[df_even_more_parsed_relics['Relic_Class']=='Axi'].reset_index(drop=True)

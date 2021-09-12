@@ -4,13 +4,14 @@ try:
     from bs4 import BeautifulSoup  # Needed to parse the dynamic webpage of the Ducanator
     from requests import get  # Needed to get the webpage of the Ducanator
     from re import search  # Needed to find the json string to import into pandas
-    from pandas import set_option, merge, to_numeric, DataFrame, read_json, read_html, ExcelWriter  # Needed to convert the json string into a usable dataframe object for manipulation
+    from pandas import read_csv, set_option, merge, to_numeric, DataFrame, read_json, read_html, ExcelWriter  # Needed to convert the json string into a usable dataframe object for manipulation
     from traceback import format_exc  # Needed for more friendly error messages.
     from openpyxl import load_workbook
     from numpy import arange
     from json import loads, dumps
     from re import compile
     from time import sleep, time
+    from os import path
 except ModuleNotFoundError:
     print('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!')
     print('You didn\'t install the packages like I told you to. Please run \"pip install bs4 requests pandas\" in a cmd window to install the required packages!')
@@ -19,6 +20,7 @@ except ModuleNotFoundError:
 
 
 def get_items(retry_attempts):
+    csv_name = 'ItemData.csv'
     url_items = 'https://api.warframe.market/v1/items'
     for x in range(0, retry_attempts):
         try:
@@ -30,6 +32,7 @@ def get_items(retry_attempts):
     df_items_get_items = DataFrame(item_json)
     df_items_get_items['item_name'] = df_items_get_items['item_name'].replace(to_replace=r' \(.+\)', value='', regex=True)
     df_items_get_items = df_items_get_items.drop(columns=['thumb'])
+    df_items_get_items.to_csv(csv_name, index=None, quoting=QUOTE_ALL)
     return df_items_get_items
 
 
@@ -96,7 +99,7 @@ def standing_to_plat_syndicates(url_syndicate_fragment, df_items_local, collapsi
         if url_syndicate_fragment == 'Cephalon_Simaris':
             return df_plat.head(res_per_syndicate+2)
         else:
-            return df_plat.head(res_per_syndicate)
+            return df_plat
     except Exception:
         # Error handling if something happens during the main script
         print('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!')
@@ -117,14 +120,18 @@ list_wiki = [
 ]
 
 if __name__ == "__main__":
-    df_items = get_items(url_get_retrys)
+    if path.isfile('ItemData.csv'):
+        df_items = read_csv('ItemData.csv')
+        print("loaded local")
+    else:
+        print("loading remote")
+        df_items = get_items(url_get_retrys)
     df_all_syndicates_buy = DataFrame()
-    df_all_syndicates_sell = DataFrame()
     for count, elem in enumerate(list_wiki):
         df_all_syndicates_buy = df_all_syndicates_buy.append(standing_to_plat_syndicates(elem[0], df_items, elem[1], url_get_retrys, results_per_syndicate, include_offline_orders, 'buy'))
         if count == 0:
             df_simaris_buy = df_all_syndicates_buy
     df_all_syndicates_buy = df_all_syndicates_buy.sort_values(by='plat_per_rep', ascending=False).reset_index(drop=True)
-    print(df_simaris_buy)
+    print(df_simaris_buy.to_string(index=False))
     print('')
-    print(df_all_syndicates_buy)
+    print(df_all_syndicates_buy.to_string(index=False))
