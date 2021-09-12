@@ -9,10 +9,11 @@ try:
     from bs4 import BeautifulSoup  # Needed to parse the dynamic webpage of the Ducanator
     from requests import get  # Needed to get the webpage of the Ducanator
     from re import search  # Needed to find the json string to import into pandas
-    from pandas import set_option, concat, DataFrame, read_json, read_html, ExcelWriter  # Needed to convert the json string into a usable dataframe object for manipulation
+    from pandas import read_csv, set_option, concat, DataFrame, read_json, read_html, ExcelWriter  # Needed to convert the json string into a usable dataframe object for manipulation
     from traceback import format_exc  # Needed for more friendly error messages.
     from openpyxl import load_workbook
     from numpy import arange
+    from os import path
 except ModuleNotFoundError:
     print('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!')
     print('You didn\'t install the packages like I told you to. Please run \"pip install bs4 requests pandas\" in a cmd window to install the required packages!')
@@ -26,6 +27,7 @@ try:
     sheet_name_day = 'Day'
     sheet_name_hour = 'Hour'
     sheet_name_relic = 'Relic Data'
+    retry_attempts = 10
     # Sets the URL to scrape, because hard-coding is bad
     print('Downloading Ducat Data')
     url_ducats = "https://warframe.market/tools/ducats"
@@ -71,7 +73,26 @@ try:
     # Fuck Comments
     print('Downloading Relic Data')
     url_relics = "https://n8k6e2y6.ssl.hwcdn.net/repos/hnfvc0o3jnfvc873njb03enrf56.html"
-    soup = str(BeautifulSoup(get(url_relics).content, "html.parser")).replace('\n', '')
+    relic_data_txt_name = 'RelicData.txt'
+
+    if path.isfile(relic_data_txt_name):
+        with open(relic_data_txt_name) as f:
+            soup = str(f.readlines())
+        print("Loaded Local Relic Data")
+    else:
+        print("Loading Remote Item Data")
+
+        for x in range(0, retry_attempts):
+            try:
+                soup = str(BeautifulSoup(get(url_relics).content, "html.parser")).replace('\n', '')
+                print('Saving Local Data')
+                with open(relic_data_txt_name, 'w') as f:
+                    f.write(soup)
+                break
+            except Exception:
+                print('Relic data download failed, retrying... ' + str(retry_attempts - x - 1) + ' attempts left...', end='\r')
+
+
     print('Relic Data Downloaded')
     print('Processing Relic Data')
     parsed_relics = search('<h3 id="relicRewards">Relics:</h3><table>.*?</table>', soup).group(0)[34:].replace('th>', 'td>').replace(r'<th colspan="2">', r'<td>').replace('X Kuva', 'x Kuva')
