@@ -20,7 +20,6 @@ except ModuleNotFoundError:
 
 
 def get_items(retry_attempts):
-    csv_name = 'ItemData.csv'
     url_items = 'https://api.warframe.market/v1/items'
     for x in range(0, retry_attempts):
         try:
@@ -38,7 +37,7 @@ def get_items(retry_attempts):
 
 def standing_to_plat_syndicates(url_syndicate_fragment, df_items_local, collapsible_regex, retry_attempts, res_per_syndicate, include_offline, order_type):
     try:
-        print('Processing ' + url_syndicate_fragment.replace('_', ' ') + ' Items')
+        print('Processing ' + url_syndicate_fragment.replace('_', ' ') + ' Warframe.Market Orders')
         workbook_name = 'StandingToPlat.xlsx'
         sheet_name_standing_to_plat_data = 'Standing To Plat Data'
         url_syndicate = 'https://warframe.fandom.com/wiki/' + url_syndicate_fragment
@@ -120,11 +119,12 @@ list_wiki = [
 ]
 
 if __name__ == "__main__":
-    if path.isfile('ItemData.csv'):
-        df_items = read_csv('ItemData.csv')
-        print("loaded local")
+    csv_name = 'ItemData.csv'
+    if path.isfile(csv_name):
+        df_items = read_csv(csv_name)
+        print("Loaded Local Item Data")
     else:
-        print("loading remote")
+        print("Loading Remote Item Data")
         df_items = get_items(url_get_retrys)
     df_all_syndicates_buy = DataFrame()
     for count, elem in enumerate(list_wiki):
