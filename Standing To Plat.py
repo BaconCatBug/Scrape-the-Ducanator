@@ -108,7 +108,7 @@ def standing_to_plat_syndicates(url_syndicate_fragment, df_items_local, collapsi
 
 url_get_retrys = 10
 results_per_syndicate = 2
-include_offline_orders = True
+include_offline_orders = False
 list_wiki = [
     ['Cephalon_Simaris', 'mw-customcollapsible-Simaris'],
     ['Steel_Meridian', 'mw-customcollapsible-SteelMeridian'],

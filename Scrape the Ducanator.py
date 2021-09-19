@@ -22,11 +22,11 @@ except ModuleNotFoundError:
 
 try:
     #User Variables
-    workbook_name = 'Prime-Relic Data.xlsx'
+    workbook_name = 'Prime_Relic_Data.xlsx'
     csv_name = 'Prime-Relic Data.csv'
     sheet_name_day = 'Day'
     sheet_name_hour = 'Hour'
-    sheet_name_relic = 'Relic Data'
+    sheet_name_relic = 'Relic_Data'
     retry_attempts = 10
     # Sets the URL to scrape, because hard-coding is bad
     print('Downloading Ducat Data')
@@ -129,7 +129,9 @@ try:
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U1_Odds', df_even_more_parsed_relics['U1'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'U2_Odds', df_even_more_parsed_relics['U2'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
     df_even_more_parsed_relics.insert(len(df_even_more_parsed_relics.columns), 'Rare_Odds', df_even_more_parsed_relics['Rare'].replace(to_replace=r'.+\((.+)\%\)',value=r'\1',regex=True).astype(float))
-    df_even_more_parsed_relics = df_even_more_parsed_relics.replace(to_replace=r'^(.+) Blueprint',value=r'\1', regex=True)
+    df_even_more_parsed_relics = df_even_more_parsed_relics.replace(to_replace=r'Systems Blueprint',value=r'Systems', regex=True)
+    df_even_more_parsed_relics = df_even_more_parsed_relics.replace(to_replace=r'Neuroptics Blueprint',value=r'Systems', regex=True)
+    df_even_more_parsed_relics = df_even_more_parsed_relics.replace(to_replace=r'Chassis Blueprint',value=r'Systems', regex=True)
     #print(df_even_more_parsed_relics.head(5))
     #df_even_more_parsed_relics['Relic_Name'] = df_even_more_parsed_relics['Relic_Name'].str.split(n=1).str[1]
     #df_axi = df_even_more_parsed_relics[df_even_more_parsed_relics['Relic_Class']=='Axi'].reset_index(drop=True)
