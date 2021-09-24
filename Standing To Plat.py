@@ -116,6 +116,7 @@ list_wiki = [
     ['Cephalon_Suda', 'mw-customcollapsible-CephalonSuda'],
     ['Red_Veil', 'mw-customcollapsible-RedVeil'],
     ['New_Loka', 'mw-customcollapsible-NewLoka'],
+    ['The_Perrin_Sequence', 'mw-customcollapsible-ThePerrinSequence']
 ]
 
 if __name__ == "__main__":
